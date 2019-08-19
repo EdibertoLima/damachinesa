@@ -1,0 +1,256 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package damashinesa;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+/**
+ *
+ * @author ediberto
+ */
+public class Damahinesa extends JFrame {
+
+    private Container contents;
+    private JButton[][] estrela = new JButton[17][26];
+    private Color ColorBlack = Color.BLACK;
+    private Color ColorBlue = Color.BLUE;
+    private Color ColorRed = Color.RED;
+
+    private int row = 0;
+    private int col = 0;
+    //Color coratual = null;
+    int cont = 0;
+    Color cantes = null;
+
+    public Damahinesa() {
+
+        contents = getContentPane();
+        contents.setLayout(new GridLayout(17, 26));
+
+        ButtonHandler eventobutao = new ButtonHandler();
+        for (int x = 0; x < 17; x++) {
+            for (int y = 0; y < 25; y++) {
+
+                estrela[x][y] = new JButton();
+                estrela[x][y].setBackground(Color.WHITE);
+                contents.add(estrela[x][y]);
+
+            }
+        }
+//         estrela[0][12].setBackground(Color.BLACK);
+//         estrela[1][11].setBackground(Color.BLACK);
+        int linhax = 12;
+        int aux = 0;
+        int coll = 1;
+        for (int colun = 0; colun < 4; colun++) {
+
+            aux = linhax;
+            for (int j = 0; j <= colun; j++) {
+                estrela[colun][aux].setBackground(ColorBlack);
+                estrela[colun][aux].addActionListener(eventobutao);
+                aux += 2;
+            }
+            coll += 1;
+            linhax -= 1;
+        }
+        linhax = 0;
+        aux = 0;
+        coll = 12;
+        for (int colun = 4; colun < 9; colun++) {
+            aux = linhax;
+            for (int j = 0; j <= coll; j++) {
+                estrela[colun][aux].setBackground(ColorBlack);
+                estrela[colun][aux].addActionListener(eventobutao);
+                aux += 2;
+            }
+            coll -= 1;
+            linhax += 1;
+        }
+        linhax = 3;
+        aux = 0;
+        coll = 9;
+        for (int colun = 9; colun <= 12; colun++) {
+            aux = linhax;
+            for (int j = 0; j <= coll; j++) {
+                estrela[colun][aux].setBackground(ColorBlack);
+                estrela[colun][aux].addActionListener(eventobutao);
+                aux += 2;
+
+            }
+            coll += 1;
+            linhax -= 1;
+        }
+        linhax = 9;
+        aux = 0;
+        coll = 3;
+        for (int colun = 13; colun < 17; colun++) {
+            aux = linhax;
+            for (int j = 0; j <= coll; j++) {
+                estrela[colun][aux].setBackground(ColorBlack);
+                estrela[colun][aux].addActionListener(eventobutao);
+                aux += 2;
+
+            }
+            coll -= 1;
+            linhax += 1;
+        }
+
+//        for (int x = 0; x < 17; x++) {
+//            for (int y = 0; y < 25; y++) {
+//           Color cor=estrela[x][y].getBackground();
+//           if(cor!=ColorBlack){
+////           estrela[x][y]=new JButton();
+////           estrela[x][y].setBackground(Color.WHITE);
+//           contents.remove(estrela[x][y]);
+//           }
+//       } }
+        setSize(500, 500);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        iniciaJogo();
+    }
+
+    public void iniciaJogo() {
+        int linhax = 12;
+        int aux = 0;
+        int coll = 1;
+        for (int colun = 0; colun < 4; colun++) {
+
+            aux = linhax;
+            for (int j = 0; j <= colun; j++) {
+                estrela[colun][aux].setBackground(ColorBlue);
+                aux += 2;
+            }
+            coll += 1;
+            linhax -= 1;
+        }
+        linhax = 9;
+        aux = 0;
+        coll = 3;
+        for (int colun = 13; colun < 17; colun++) {
+            aux = linhax;
+            for (int j = 0; j <= coll; j++) {
+                estrela[colun][aux].setBackground(ColorRed);
+                aux += 2;
+
+            }
+            coll -= 1;
+            linhax += 1;
+        }
+
+    }
+
+    public boolean validMovi(int x, int y,Color corr) {
+        int deltax = Math.abs(x-row);
+        int deltay = Math.abs(y-col);
+        if(x!=row ){
+         if(deltay==1){   
+        return true;}
+//         if(deltay==2 && )
+        }
+        return false;
+    }
+    
+    private void  possiMovi(int x, int y){
+    int pos1x= x-1;
+    int pos1y=y+1;
+    int pos1x2= x+1;
+    int pos1y2=y-1;
+    if(estrela[pos1x][pos1y2].getBackground()==ColorBlack)
+    {
+        //borda diferente
+    }
+    if(estrela[pos1x2][pos1y2].getBackground()==ColorBlack)
+    {
+        //borda diferente
+    }
+    if(estrela[pos1x][pos1y].getBackground()==ColorBlack)
+    {
+        //borda diferente
+    }
+    if(estrela[pos1x2][pos1y].getBackground()==ColorBlack)
+    {
+        //borda diferente
+    }
+    }
+    
+    private class ButtonHandler implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            Object source = e.getSource();
+            for (int x = 0; x < 17; x++) {
+                for (int y = 0; y < 25; y++) {
+                    if (source == estrela[x][y]) {
+                        Color coratual = estrela[x][y].getBackground();
+                        if (coratual != ColorBlack) {
+                            if (cont == 0) {
+                                cantes = coratual;
+                                row = x;
+                                col = y;
+                                System.err.println("entrou");
+                                cont += 1;
+                                return;
+                            }
+                        }
+                        if (coratual == ColorBlack) {
+                            if (cont != 0) {
+                                proceClick(x, y, cantes);
+                                System.err.println("entrou 2");
+                                cont = 0;
+                                return;
+                            }
+                        }
+                        if (coratual != cantes && coratual != ColorBlack) {
+                            if (cont == 1) {
+                                cantes = coratual;
+                                row = x;
+                                col = y;
+                                System.err.println("entrou 3");
+                                cont = 1;
+                                return;
+                            }
+                        }
+                        if (coratual == cantes) {
+                            if (cont == 1) {
+                                row = x;
+                                col = y;
+                                System.err.println("entrou 4");
+                                cont = 1;
+                                return;
+                            }
+                        }
+                    }
+
+                    {
+
+                        // System.out.println(x + " " + y);
+                        //System.out.println(ColorBlack);
+                        //return;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private void proceClick(int x, int y, Color corr) {
+        if (validMovi(x, y,corr) == false) {
+            return;
+        }
+        estrela[row][col].setBackground(ColorBlack);
+        estrela[x][y].setBackground(corr);
+    }
+
+    public static void main(String[] args) {
+        Damahinesa gui = new Damahinesa();
+        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
