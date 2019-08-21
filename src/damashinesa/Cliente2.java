@@ -7,13 +7,13 @@ package damashinesa;
 
 import java.net.*;
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Cliente2 extends Thread {
 
-  static DataOutputStream ostream = null;
-  DataInputStream istream = null;
-  static String host = "127.0.0.2";
+  static ObjectOutputStream ostream = null;
+  ObjectInputStream istream = null;
+  static String host = "";
   static int port = 9090;
   Socket socket = null;
   String MRcv= "";
@@ -25,8 +25,8 @@ public class Cliente2 extends Thread {
      socket = new Socket(host, port);
      System.out.println("Conectado....");
      this.start();
-     ostream = new DataOutputStream(socket.getOutputStream());
-     istream = new DataInputStream(socket.getInputStream());
+     ostream = new ObjectOutputStream(socket.getOutputStream());
+     istream = new ObjectInputStream(socket.getInputStream());
      Scanner console = new Scanner(System.in);
      while(true){
 	System.out.println("Mensagem: ");
@@ -50,6 +50,6 @@ public class Cliente2 extends Thread {
   public static void main(String args[]){
     host = args.length == 0 ? "localhost" : args[0];
       System.err.println("host"+host);
-    new Cliente1(); 
+    new Cliente2(); 
   }
 }

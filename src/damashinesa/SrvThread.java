@@ -4,26 +4,30 @@ import java.awt.List;
 import java.net.*;
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
-
+import java.util.*;
+import damashinesa.Mensagem;
 class SrvThread extends Thread {
 
     ServerSocket serverSocket = null;
     Socket socket = null;
     Socket socket2 = null;
-    static DataOutputStream ostream1 = null;
-    static DataOutputStream ostream2 = null;
+    static ObjectOutputStream ostream1 = null;
+    static ObjectOutputStream ostream2 = null;
     static int port = 9090;
-    DataInputStream istream1 = null;
-    DataInputStream istream2 = null;
+    ObjectInputStream istream1 = null;
+    ObjectInputStream istream2 = null;
     String MRcv = "";
+    int movimetox;
+    int movimetoy;
     static String MSnd = "";
     List lista;
     cliente1 c1 = new cliente1();
     Thread t1 = new Thread(c1);
     cliente2 c2 = new cliente2();
     Thread t2 = new Thread(c2);
-
+    jogo jogada = new jogo();
+    Thread j = new Thread(jogada);
+    Mensagem m;
     SrvThread() {
         while (true) {
             try {
@@ -35,16 +39,18 @@ class SrvThread extends Thread {
                 System.out.println("Aguardando conexão2...");
                 socket2 = serverSocket.accept();
                 System.out.println("Conexão2 Estabelecida.");
-                ostream2 = new DataOutputStream(socket2.getOutputStream());
-                ostream1 = new DataOutputStream(socket.getOutputStream());
-                istream1 = new DataInputStream(socket.getInputStream());
-                istream2 = new DataInputStream(socket2.getInputStream());
-
+                ostream2 = new ObjectOutputStream(socket2.getOutputStream());
+                istream2 = new ObjectInputStream(socket2.getInputStream());
+                ostream1 = new ObjectOutputStream(socket.getOutputStream());
+                istream1 = new ObjectInputStream(socket.getInputStream());
+                
                 t1.start();
                 t2.start();
-
+                j.start();
+                
                 Scanner console = new Scanner(System.in);
                 while (true) {
+                    
                     System.out.println("Mensagem: ");
                     String MSnd = console.nextLine();
                     ostream1.writeUTF(MSnd);
@@ -61,11 +67,21 @@ class SrvThread extends Thread {
         public void run() {
             try {
                 while (true) {
-
-                    MRcv = istream1.readUTF();
+                    m =  (Mensagem) istream1.readObject();
+                    String operacao = m.getOperacao();
+                    if(operacao.equals("mensagem")){
+                    MRcv = (String) m.getParam("mensagem");
                     ostream2.writeUTF(MRcv);
                     ostream2.flush();
-                    System.out.println("Remoto1: " + MRcv);
+                    System.out.println("mensagem: " + MRcv);
+                    }
+                     if(operacao.equals("jogada")){
+                    movimetox = (int) m.getParam("posicao");
+//                    ostream2.writeUTF(MRcv);
+//                    ostream2.flush();
+                    System.out.println("jogada: " + movimetox);
+                    }
+
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -76,16 +92,44 @@ class SrvThread extends Thread {
     public class cliente2 implements Runnable {
 
         public void run() {
-            
+
             try {
                 while (true) {
-                MRcv = istream2.readUTF();
-                ostream1.writeUTF(MRcv);
-                ostream1.flush();
-                System.out.println("Remoto2: " + MRcv);
-            }
+                    m = (Mensagem) istream2.readObject();
+                    String operacao = m.getOperacao();
+                    if(operacao.equals("mensagem")){
+                    MRcv = (String) m.getParam("mensagem");
+                    ostream1.writeUTF(MRcv);
+                    ostream1.flush();
+                    System.out.println("Remoto2: " + MRcv);
+                    }
+                }
             } catch (Exception e) {
                 System.out.println(e);
+            }
+        }
+    }
+
+    public class jogo implements Runnable {
+
+        public void run() {
+
+            try {
+                while (true) {
+//                    m = (Mensagem) istream1.readObject();
+//                    String operacao = m.getOperacao();
+//                    System.out.println(operacao);
+//                    if(operacao.equals("jogada")){
+//                     movimetox = (int) m.getParam("posicao");
+//                    
+//                    ostream1.writeUTF(MRcv);
+//                    ostream1.flush();
+//                    System.out.println("Remoto2: " + movimetox);
+//                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                System.out.println("errp jogo");
             }
         }
     }

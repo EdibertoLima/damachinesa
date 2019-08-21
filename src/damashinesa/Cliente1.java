@@ -1,13 +1,13 @@
 package damashinesa;
 import java.net.*;
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Cliente1 extends Thread {
 
-  static DataOutputStream ostream = null;
-  DataInputStream istream = null;
-  static String host = "127.0.0.1";
+  static ObjectOutputStream ostream = null;
+  ObjectInputStream istream = null;
+  static String host = "";
   static int port = 9090;
   Socket socket = null;
   String MRcv= "";
@@ -19,14 +19,24 @@ public class Cliente1 extends Thread {
      socket = new Socket(host, port);
      System.out.println("Conectado....");
      this.start();
-     ostream = new DataOutputStream(socket.getOutputStream());
-     istream = new DataInputStream(socket.getInputStream());
+     ostream = new ObjectOutputStream(socket.getOutputStream());
+     istream = new ObjectInputStream(socket.getInputStream());
      Scanner console = new Scanner(System.in);
      while(true){
-	System.out.println("Mensagem: ");
-        String MSnd = console.nextLine();
-        ostream.writeUTF(MSnd);
-        ostream.flush();
+	 System.out.println("Mensagem: ");
+         Mensagem m1 = new Mensagem("mensagem");
+         String MSnd = console.nextLine();
+         m1.setParam("mensagem",MSnd);
+         ostream.writeObject(m1);
+         ostream.flush();
+         
+//        System.out.println("jogada: ");
+//        
+//        int jogada = console.nextInt();
+//        Mensagem m = new Mensagem("jogada");
+//        m.setParam("posicao",jogada);
+//        ostream.writeObject(m);
+//        ostream.flush();
       }
     } catch(Exception e) {System.out.println(e);}
   }
