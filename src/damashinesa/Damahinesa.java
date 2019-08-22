@@ -189,6 +189,7 @@ public class Damahinesa extends JInternalFrame {
                 for (int y = 0; y < 25; y++) {
                     if (source == estrela[x][y]) {
                         Color coratual = estrela[x][y].getBackground();
+                       //if(coratual==c)
                         if (coratual != ColorBlack) {
                             if (cont == 0) {
                                 cantes = coratual;
