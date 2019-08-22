@@ -28,8 +28,6 @@ class SrvThread extends Thread {
     Thread t1 = new Thread(c1);
     cliente2 c2 = new cliente2();
     Thread t2 = new Thread(c2);
-    jogo jogada = new jogo();
-    Thread j = new Thread(jogada);
     Mensagem m;
 
     SrvThread() {
@@ -50,8 +48,9 @@ class SrvThread extends Thread {
 
                 t1.start();
                 t2.start();
-                j.start();
-
+               
+                
+                
                 Scanner console = new Scanner(System.in);
                 while (true) {
 
@@ -119,29 +118,7 @@ class SrvThread extends Thread {
         }
     }
 
-    public class jogo implements Runnable {
-
-        public void run() {
-
-            try {
-                while (true) {
-//                    m = (Mensagem) istream1.readObject();
-//                    String operacao = m.getOperacao();
-//                    System.out.println(operacao);
-//                    if(operacao.equals("jogada")){
-//                     movimetox = (int) m.getParam("posicao");
-//                    
-//                    ostream1.writeUTF(MRcv);
-//                    ostream1.flush();
-//                    System.out.println("Remoto2: " + movimetox);
-//                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("erro jogo");
-            }
-        }
-    }
+ 
 
     public static void main(String args[]) {
         new SrvThread();

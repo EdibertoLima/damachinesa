@@ -17,6 +17,7 @@ import javax.swing.JFrame;
  *
  * @author ediberto
  */
+
 public class loby extends javax.swing.JFrame {
 
     /**
@@ -28,7 +29,9 @@ public class loby extends javax.swing.JFrame {
      */
     Damahinesa dama = new Damahinesa("nome");
     String nome1;
-
+    int tunr;
+    
+    
     public loby(String nome, String host, int porta) {
         super(nome + host);
         new jogador(host, porta);
@@ -38,9 +41,11 @@ public class loby extends javax.swing.JFrame {
         dama.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jPanel1.add(dama);
         dama.setVisible(true);
-        System.out.println("1");
-
-        System.out.println("1");
+        jTextArea3.setText("olá "+nome+" suas peças sao as");
+       
+    }
+    void escolhaCor(){
+        
     }
 
     /**
@@ -55,7 +60,6 @@ public class loby extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -63,6 +67,8 @@ public class loby extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,8 +88,6 @@ public class loby extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        jTextField2.setEditable(false);
 
         jLabel2.setText("LOG de evetos :");
 
@@ -112,6 +116,10 @@ public class loby extends javax.swing.JFrame {
         jTextArea2.setRows(5);
         jScrollPane3.setViewportView(jTextArea2);
 
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jScrollPane1.setViewportView(jTextArea3);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,13 +138,15 @@ public class loby extends javax.swing.JFrame {
                                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(41, 41, 41)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(48, 48, 48)
-                                        .addComponent(jScrollPane3))))
+                                        .addComponent(jScrollPane3))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(41, 41, 41)
+                                        .addComponent(jLabel2)
+                                        .addGap(185, 185, 185))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -166,9 +176,9 @@ public class loby extends javax.swing.JFrame {
                         .addGap(193, 193, 193)))
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -256,11 +266,12 @@ public class loby extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextArea jTextArea3;
     // End of variables declaration//GEN-END:variables
     ObjectOutputStream ostream = null;
     ObjectInputStream istream = null;
