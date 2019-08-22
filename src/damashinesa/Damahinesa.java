@@ -14,7 +14,7 @@ import javax.swing.*;
  *
  * @author ediberto
  */
-public class Damahinesa extends JFrame {
+public class Damahinesa extends JInternalFrame {
 
     private Container contents;
     private JButton[][] estrela = new JButton[17][26];
@@ -22,14 +22,16 @@ public class Damahinesa extends JFrame {
     private Color ColorBlue = Color.BLUE;
     private Color ColorRed = Color.RED;
 
-    private int row = 0;
-    private int col = 0;
-    //Color coratual = null;
+    int row = 0;
+    int col = 0;
+    int xglobal = 0;
+    int yglobal = 0;
+    Color coratual = null;
     int cont = 0;
     Color cantes = null;
-
-    public Damahinesa() {
-
+    boolean envia=false;
+    public Damahinesa(String name) {
+        super(name);
         contents = getContentPane();
         contents.setLayout(new GridLayout(17, 26));
 
@@ -112,8 +114,8 @@ public class Damahinesa extends JFrame {
 //       } }
         setSize(500, 500);
         setResizable(false);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        // setLocationRelativeTo(null);
+        //setVisible(true);
         iniciaJogo();
     }
 
@@ -147,40 +149,38 @@ public class Damahinesa extends JFrame {
 
     }
 
-    public boolean validMovi(int x, int y,Color corr) {
-        int deltax = Math.abs(x-row);
-        int deltay = Math.abs(y-col);
-        if(x!=row ){
-         if(deltay==1){   
-        return true;}
+    public boolean validMovi(int x, int y, Color corr) {
+        int deltax = Math.abs(x - row);
+        int deltay = Math.abs(y - col);
+        if (x != row) {
+            if (deltay == 1) {
+                envia=true;
+                return true;
+            }
 //         if(deltay==2 && )
         }
         return false;
     }
-    
-    private void  possiMovi(int x, int y){
-    int pos1x= x-1;
-    int pos1y=y+1;
-    int pos1x2= x+1;
-    int pos1y2=y-1;
-    if(estrela[pos1x][pos1y2].getBackground()==ColorBlack)
-    {
-        //borda diferente
+
+    private void possiMovi(int x, int y) {
+        int pos1x = x - 1;
+        int pos1y = y + 1;
+        int pos1x2 = x + 1;
+        int pos1y2 = y - 1;
+        if (estrela[pos1x][pos1y2].getBackground() == ColorBlack) {
+            //borda diferente
+        }
+        if (estrela[pos1x2][pos1y2].getBackground() == ColorBlack) {
+            //borda diferente
+        }
+        if (estrela[pos1x][pos1y].getBackground() == ColorBlack) {
+            //borda diferente
+        }
+        if (estrela[pos1x2][pos1y].getBackground() == ColorBlack) {
+            //borda diferente
+        }
     }
-    if(estrela[pos1x2][pos1y2].getBackground()==ColorBlack)
-    {
-        //borda diferente
-    }
-    if(estrela[pos1x][pos1y].getBackground()==ColorBlack)
-    {
-        //borda diferente
-    }
-    if(estrela[pos1x2][pos1y].getBackground()==ColorBlack)
-    {
-        //borda diferente
-    }
-    }
-    
+
     private class ButtonHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
@@ -194,7 +194,6 @@ public class Damahinesa extends JFrame {
                                 cantes = coratual;
                                 row = x;
                                 col = y;
-                                System.err.println("entrou");
                                 cont += 1;
                                 return;
                             }
@@ -202,7 +201,6 @@ public class Damahinesa extends JFrame {
                         if (coratual == ColorBlack) {
                             if (cont != 0) {
                                 proceClick(x, y, cantes);
-                                System.err.println("entrou 2");
                                 cont = 0;
                                 return;
                             }
@@ -212,7 +210,6 @@ public class Damahinesa extends JFrame {
                                 cantes = coratual;
                                 row = x;
                                 col = y;
-                                System.err.println("entrou 3");
                                 cont = 1;
                                 return;
                             }
@@ -221,7 +218,6 @@ public class Damahinesa extends JFrame {
                             if (cont == 1) {
                                 row = x;
                                 col = y;
-                                System.err.println("entrou 4");
                                 cont = 1;
                                 return;
                             }
@@ -242,15 +238,30 @@ public class Damahinesa extends JFrame {
     }
 
     private void proceClick(int x, int y, Color corr) {
-        if (validMovi(x, y,corr) == false) {
+        xglobal = x;
+        yglobal = y;
+        //System.out.println("x "+x+" y "+y);
+        coratual=corr;
+        if (validMovi(x, y, corr) == false) {
             return;
         }
+        
+        
         estrela[row][col].setBackground(ColorBlack);
         estrela[x][y].setBackground(corr);
+        envia=false;
     }
 
-    public static void main(String[] args) {
-        Damahinesa gui = new Damahinesa();
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    void recebeJogada(int x, int y,int x1,int y1, Color corr){
+        row=x1;
+        col=y1;
+        estrela[row][col].setBackground(ColorBlack);
+        estrela[x][y].setBackground(corr);
+    
     }
+
+//    public static void main(String[] args) {
+//        Damahinesa gui = new Damahinesa("");
+//        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    }
 }

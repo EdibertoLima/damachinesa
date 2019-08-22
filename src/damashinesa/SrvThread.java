@@ -3,9 +3,10 @@ package damashinesa;
 import java.awt.List;
 import java.net.*;
 import java.io.*;
-import java.net.*;
 import java.util.*;
 import damashinesa.Mensagem;
+import java.awt.Color;
+
 class SrvThread extends Thread {
 
     ServerSocket serverSocket = null;
@@ -19,6 +20,8 @@ class SrvThread extends Thread {
     String MRcv = "";
     int movimetox;
     int movimetoy;
+    int row, col;
+    Color cor;
     static String MSnd = "";
     List lista;
     cliente1 c1 = new cliente1();
@@ -28,6 +31,7 @@ class SrvThread extends Thread {
     jogo jogada = new jogo();
     Thread j = new Thread(jogada);
     Mensagem m;
+
     SrvThread() {
         while (true) {
             try {
@@ -43,14 +47,14 @@ class SrvThread extends Thread {
                 istream2 = new ObjectInputStream(socket2.getInputStream());
                 ostream1 = new ObjectOutputStream(socket.getOutputStream());
                 istream1 = new ObjectInputStream(socket.getInputStream());
-                
+
                 t1.start();
                 t2.start();
                 j.start();
-                
+
                 Scanner console = new Scanner(System.in);
                 while (true) {
-                    
+
                     System.out.println("Mensagem: ");
                     String MSnd = console.nextLine();
                     ostream1.writeUTF(MSnd);
@@ -67,19 +71,18 @@ class SrvThread extends Thread {
         public void run() {
             try {
                 while (true) {
-                    m =  (Mensagem) istream1.readObject();
+                    m = (Mensagem) istream1.readObject();
                     String operacao = m.getOperacao();
-                    if(operacao.equals("mensagem")){
-                    MRcv = (String) m.getParam("mensagem");
-                    ostream2.writeUTF(MRcv);
-                    ostream2.flush();
-                    System.out.println("mensagem: " + MRcv);
+                    if (operacao.equals("mensagem")) {
+                        ostream2.writeObject(m);
+                        ostream2.flush();
+                        
                     }
-                     if(operacao.equals("jogada")){
-                    movimetox = (int) m.getParam("posicao");
-//                    ostream2.writeUTF(MRcv);
-//                    ostream2.flush();
-                    System.out.println("jogada: " + movimetox);
+                    if (operacao.equals("jogada")) {
+            
+                        ostream2.writeObject(m);
+                        ostream2.flush();
+
                     }
 
                 }
@@ -97,13 +100,19 @@ class SrvThread extends Thread {
                 while (true) {
                     m = (Mensagem) istream2.readObject();
                     String operacao = m.getOperacao();
-                    if(operacao.equals("mensagem")){
-                    MRcv = (String) m.getParam("mensagem");
-                    ostream1.writeUTF(MRcv);
-                    ostream1.flush();
-                    System.out.println("Remoto2: " + MRcv);
+                    if (operacao.equals("mensagem")) {
+                        ostream1.writeObject(m);
+                        ostream1.flush();
+                        
                     }
-                }
+                    if (operacao.equals("jogada")) {
+                       
+                        ostream1.writeObject(m);
+                        ostream1.flush();
+
+                    }
+                    }
+                
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -129,7 +138,7 @@ class SrvThread extends Thread {
                 }
             } catch (Exception e) {
                 System.out.println(e);
-                System.out.println("errp jogo");
+                System.out.println("erro jogo");
             }
         }
     }
